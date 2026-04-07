@@ -136,7 +136,7 @@ uploaded_file = st.file_uploader(
 )
 st.markdown(
     "<div style='font-size:14px; color:#666; margin-top:-10px;'>"
-    "Las imágenes no se almacenan. El procesamiento es temporal y los resultados son confidenciales."
+    "⚠️ Las imágenes no se almacenan. El procesamiento es temporal y los resultados son confidenciales."
     "</div>",
     unsafe_allow_html=True
 )
