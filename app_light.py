@@ -144,7 +144,6 @@ st.markdown(
         margin-bottom:10px;
         border-radius:6px;
         font-size:15px;
-        color:#222;
     ">
         🔒 <strong> Privacidad de los datos</strong><br>
         Las imágenes no se almacenan ni se utilizan para ningún otro fin. 
