@@ -135,9 +135,22 @@ uploaded_file = st.file_uploader(
     type=["png", "jpg", "jpeg"]
 )
 st.markdown(
-    "<div style='font-size:14px; color:#666; margin-top:-10px;'>"
-    "⚠️ Las imágenes no se almacenan. El procesamiento es temporal y los resultados son confidenciales."
-    "</div>",
+    """
+    <div style="
+        background-color:#f5f7fa;
+        border-left:4px solid #1e88e5;
+        padding:14px 16px;
+        margin-top:10px;
+        margin-bottom:10px;
+        border-radius:6px;
+        font-size:15px;
+        color:#222;
+    ">
+        🔒 <strong>Confidencialidad garantizada</strong><br>
+        Las imágenes no se almacenan ni se utilizan para ningún otro fin. 
+        El análisis se realiza en tiempo real y la información es completamente confidencial.
+    </div>
+    """,
     unsafe_allow_html=True
 )
 st.markdown("## ⚙️ Condiciones Operativas del Sistema")
