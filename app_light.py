@@ -146,7 +146,7 @@ st.markdown(
         font-size:15px;
         color:#222;
     ">
-        🔒 <strong>Confidencialidad garantizada</strong><br>
+        🔒 <strong> Confidencialidad garantizada</strong><br>
         Las imágenes no se almacenan ni se utilizan para ningún otro fin. 
         El análisis se realiza en tiempo real y la información es completamente confidencial.
     </div>
