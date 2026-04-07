@@ -386,6 +386,25 @@ if uploaded_file:
             )
 
             st.write(summary_response.choices[0].message.content)
+            import requests
+
+            data = {
+                "score_global": average_score,
+                "scores": scores,
+                "summary": summary_response.choices[0].message.content,
+                "tipo_sistema": tipo_sistema,
+                "criticidad": nivel_criticidad,
+                "usuario": perfil_usuario,
+                "entorno": entorno_operativo
+            }
+
+            try:
+                requests.post(
+                    "https://script.google.com/macros/s/AKfycbwgowPNFGeBzYGbD2UNLgKlghrgN9KTHuhzVKB2ym-_GL67nSRx9BQD85R0PpR5WMgC/exec",
+                    json=data
+                )
+            except:
+                pass
 
 # =========================
 # CTA FINAL – SOLO TRAS ANÁLISIS
