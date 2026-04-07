@@ -105,7 +105,7 @@ with col_title:
         """
         <div style="font-size:32px; font-weight:600; line-height:1.3; margin-bottom:24px;">
             Evaluación cognitiva basada en los 8 puentes de
-            <span style="font-weight:700;">The Cognitive Joint</span>
+            <span style="font-weight:700;">The Cognitive Joint™</span>
         </div>
         """,
         unsafe_allow_html=True
