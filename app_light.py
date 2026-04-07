@@ -137,7 +137,7 @@ uploaded_file = st.file_uploader(
 st.markdown(
     """
     <div style="
-        background-color:rgba(153,167,197,0.1);
+        background-color:rgba(146,461,191,0.1);
         border-left:4px solid #1e88e5;
         padding:14px 16px;
         margin-top:10px;
