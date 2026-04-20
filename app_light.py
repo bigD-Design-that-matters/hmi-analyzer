@@ -146,8 +146,8 @@ st.markdown(
         font-size:15px;
     ">
         🔒 <strong> Privacidad de los datos</strong><br>
-        Las imágenes no se almacenan ni se utilizan para ningún otro fin. 
-        Los resultados pueden ser utilizados de forma anónima para mejorar la herramienta.
+        Las imágenes que se suben no son almacenadas por bigD. 
+        Los resultados del análisis no se vinculan con el usuario registrado.
     </div>
     """,
     unsafe_allow_html=True
