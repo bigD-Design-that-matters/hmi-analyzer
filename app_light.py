@@ -590,18 +590,7 @@ if uploaded_file:
             st.write(final_summary_text)
 
 
-            if st.session_state.get("analysis_done"):
 
-                scores = st.session_state["scores"]
-                bridge_names_list = st.session_state["bridge_names"]
-                bridge_summaries_list = st.session_state["bridge_summaries"]
-                average_score = st.session_state["average_score"]
-                final_summary_text = st.session_state["final_summary"]
-            
-                st.subheader("Resultado global")
-                st.metric("Calidad UX HMI", f"{average_score} / 10")
-            
-                st.write(final_summary_text)
 
 
             
