@@ -276,8 +276,9 @@ def generate_hmi_pdf(
         ("ALIGN",         (1, 0), (1, 0), "RIGHT"),
     ]))
     story.append(fila_score)
-    story.append(Spacer(1, 2 * mm))
+    story.append(Spacer(1, 8 * mm))
     story.append(ScoreBar(average_score, width=CONTENT_W, height=8))
+    story.append(Spacer(1, 4 * mm))
 
     story.append(PageBreak())
 
