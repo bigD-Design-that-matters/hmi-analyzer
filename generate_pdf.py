@@ -117,7 +117,7 @@ class HeaderFooterCanvas(rl_canvas.Canvas):
         self.setFont("Helvetica-Bold", 8)
         self.setFillColor(BLANCO)
         self.drawRightString(W - 12 * mm, H - 9 * mm,
-                             "HMI Analyzer")
+                             "HMI Analyzer - The Cognitive Joint")
 
         # Footer
         self.setFillColor(GRIS_CLARO)
@@ -363,10 +363,9 @@ def generate_hmi_pdf(
             ("RIGHTPADDING",  (0, 0), (-1, -1), 8 * mm),
             ("TOPPADDING",    (0, 0), (-1, -1), 5 * mm),
             ("BOTTOMPADDING", (0, 0), (-1, -1), 5 * mm),
-            ("LINEABOVE",     (0, 0), (-1, 0), 3, clr),
         ]))
 
-        story.append(KeepTogether([contenedor, Spacer(1, 4 * mm)]))
+        story.append(KeepTogether([contenedor, Spacer(1, 8 * mm)]))
 
     story.append(Spacer(1, 4 * mm))
 
