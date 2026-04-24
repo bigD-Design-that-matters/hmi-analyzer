@@ -349,7 +349,7 @@ if uploaded_file:
                                     "- Si los errores son fácilmente corregibles, puedes ser ligeramente más tolerante.\n"
                                     "Formato obligatorio:\n"
                                     "PUNTUACIÓN: X/10\n"
-                                    "RESUMEN: un párrafo breve (2–4 frases) con un diagnóstico claro y directo.\n"
+                                    "RESUMEN: un párrafo breve (2–3 frases) con un diagnóstico claro y directo.\n"
                                     "- Evita frases genéricas que podrían aplicarse a cualquier HMI. "
                                     "- Si no puedes identificar elementos claros en la imagen relacionados con este puente, baja la puntuación."
                                     "- Describe los problemas o aciertos más relevantes basándote en elementos visibles concretos.\n"
