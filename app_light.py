@@ -146,7 +146,7 @@ st.markdown(
         font-size:15px;
     ">
         🔒 <strong> Privacidad de los datos</strong><br>
-        Las imágenes que se suben no son almacenadas por bigD.<br><br>
+        Las imágenes que se suben no son almacenadas por bigD.<br>
         Los resultados del análisis no se vinculan con el usuario registrado.
     </div>
     """,
