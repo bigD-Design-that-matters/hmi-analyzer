@@ -396,10 +396,8 @@ if uploaded_file:
                 "score_global": average_score,
                 "scores": scores,
                 "summary": summary_response.choices[0].message.content,
-                "tipo_sistema": tipo_sistema,
-                "criticidad": nivel_criticidad,
-                "usuario": perfil_usuario,
-                "entorno": entorno_operativo
+                "contexto_uso": contexto_uso,
+                "impacto_error": impacto_error
             }
 
             try:
