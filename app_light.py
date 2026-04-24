@@ -222,8 +222,7 @@ if uploaded_file:
 
                 "PUENTE 01 – ORIENTAR":
                 "Ubicar al usuario en el sistema desde el primer vistazo.\n\n"
-                "Conecta el mundo real de la máquina con su representación en la interfaz para que el usuario sepa dónde está, qué está viendo y cómo moverse sin esfuerzo.\n\n"
-                "Reduce la carga cognitiva alineando la interfaz con el mapa mental del operador.\n\n"
+                "Conecta el mundo real de la máquina con su representación en la interfaz para que el usuario sepa dónde está, qué está viendo y cómo moverse sin esfuerzo.Reduce la carga cognitiva alineando la interfaz con el mapa mental del operador.\n\n"
                 "Implica mostrar el estado del sistema de forma clara, estructurar la información en niveles (overview → detalle) y permitir una navegación coherente.",
 
 
