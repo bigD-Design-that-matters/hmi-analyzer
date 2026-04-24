@@ -349,9 +349,13 @@ if uploaded_file:
                                     "- Si los errores son fácilmente corregibles, puedes ser ligeramente más tolerante.\n"
                                     "Formato obligatorio:\n"
                                     "PUNTUACIÓN: X/10\n"
-                                    "RESUMEN: una única frase clara basada en elementos visibles concretos de la imagen. "
-                                    "Evita frases genéricas que podrían aplicarse a cualquier HMI. "
-                                    "Si no puedes identificar elementos claros en la imagen relacionados con este puente, baja la puntuación."
+                                    "RESUMEN: un párrafo breve (2–4 frases) con un diagnóstico claro y directo.\n"
+                                    "- Describe los problemas o aciertos más relevantes basándote en elementos visibles concretos.\n"
+                                    "- Prioriza el aspecto más importante (no equilibres artificialmente lo positivo y lo negativo).\n"
+                                    "- Evita estructuras del tipo 'X pero Y'.\n"
+                                    "- Si la calidad es baja, sé crítico y directo.\n"
+                                    "- Si la calidad es alta, destaca claramente las fortalezas.\n"
+                                    "- No uses frases genéricas que puedan aplicarse a cualquier HMI.\n"
                                 },
                                 {
                                     "type": "image_url",
