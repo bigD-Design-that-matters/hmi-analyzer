@@ -526,25 +526,14 @@ if uploaded_file:
                 unsafe_allow_html=True
             )
 
-            col_left_cta, col_spacer, col_right_cta = st.columns([2, 1, 2])
+            col_spacer, col_cta = st.columns([3, 2])
 
-            with col_left_cta:
+            with col_cta:
                 st.markdown(
                     """
-                    <a class="cta-dark" href="https://bigd.es/contacto/" target="_blank">
+                    <a class="cta-blue" href="https://bigd.es/contacto/" target="_blank">
                         Solicitar análisis en profundidad
                     </a>
                     """,
                     unsafe_allow_html=True
                 )
-
-            with col_right_cta:
-                st.markdown(
-                    """
-                    <a class="cta-blue" href="https://hmidesign.es/" target="_blank">
-                        HMI Design Observatory
-                    </a>
-                    """,
-                    unsafe_allow_html=True
-                )
-
