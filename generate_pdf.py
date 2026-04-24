@@ -117,7 +117,7 @@ class HeaderFooterCanvas(rl_canvas.Canvas):
         self.setFont("Helvetica-Bold", 8)
         self.setFillColor(BLANCO)
         self.drawRightString(W - 12 * mm, H - 9 * mm,
-                             "HMI Analyzer - The Cognitive Joint")
+                             "HMI Analyzer")
 
         # Footer
         self.setFillColor(GRIS_CLARO)
