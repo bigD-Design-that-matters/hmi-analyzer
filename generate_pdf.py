@@ -117,7 +117,7 @@ class HeaderFooterCanvas(rl_canvas.Canvas):
         self.setFont("Helvetica-Bold", 8)
         self.setFillColor(BLANCO)
         self.drawRightString(W - 12 * mm, H - 9 * mm,
-                             "HMI Analyzer - The Cognitive Joint")
+                             "HMI Analyzer")
 
         # Footer
         self.setFillColor(GRIS_CLARO)
@@ -262,8 +262,8 @@ def generate_hmi_pdf(
 
     fila_score = Table(
         [[
-            Paragraph("<font size=28><b>Score global</b></font>", s["body"]),
-            Paragraph(f"<font color='#{hex_g}' size=28><b>{average_score}/10</b></font>", s["body"]),
+            Paragraph("<font size=14><b>Score global</b></font>", s["body"]),
+            Paragraph(f"<font color='#{hex_g}' size=14><b>{average_score}/10</b></font>", s["body"]),
         ]],
         colWidths=[CONTENT_W * 0.55, CONTENT_W * 0.45],
     )
@@ -501,7 +501,6 @@ def generate_hmi_pdf(
     story.append(Spacer(1, 4 * mm))
     story.append(Paragraph(
         "Este informe ha sido generado automaticamente por <b>HMI Analyzer</b> - "
-        "The Cognitive Joint - bigD.es",
         s["nota"],
     ))
 
