@@ -458,11 +458,11 @@ if uploaded_file:
             st.subheader("Resultado global")
 
             if scores:
-                    average_score = round(sum(scores) / len(scores), 1)
+                average_score = round(sum(scores) / len(scores), 1)
             else:
                 average_score = 0
                 st.error("No se pudieron calcular puntuaciones.")
-    
+
             st.metric("Calidad UX HMI", f"{average_score} / 10")
 
             # =========================
@@ -495,13 +495,66 @@ if uploaded_file:
                 ]
             )
 
-            st.write(summary_response.choices[0].message.content)
+            final_summary_text = summary_response.choices[0].message.content
+            st.write(final_summary_text)
+
+            # =========================
+            # DESCARGA PDF
+            # (justo tras el resumen final)
+            # =========================
+            st.markdown("---")
+            st.markdown(
+                """
+                <div style="font-size:18px; font-weight:600; margin-bottom:6px;">
+                    📄 Descargar informe
+                </div>
+                <div style="font-size:14px; color:#444; margin-bottom:14px;">
+                    Exporta el análisis completo en PDF con diseño profesional.
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+
+            try:
+                base_dir = os.path.dirname(__file__)
+                logo_path = os.path.join(base_dir, "logo.svg")
+                with open(logo_path, "rb") as lf:
+                    logo_b64_pdf = base64.b64encode(lf.read()).decode("utf-8")
+            except Exception:
+                logo_b64_pdf = None
+
+            pdf_bytes = generate_hmi_pdf(
+                image_bytes=image_bytes,
+                scores=scores,
+                bridge_names=bridge_names_list,
+                bridge_summaries=bridge_summaries_list,
+                average_score=average_score,
+                final_summary=final_summary_text,
+                contexto_uso=contexto_uso,
+                impacto_error=impacto_error,
+                logo_b64=logo_b64_pdf,
+            )
+
+            from datetime import datetime
+            filename = f"HMI_Informe_{datetime.now().strftime('%Y%m%d_%H%M')}.pdf"
+
+            st.download_button(
+                label="⬇️ Descargar PDF",
+                data=pdf_bytes,
+                file_name=filename,
+                mime="application/pdf",
+                use_container_width=False,
+            )
+
+            # =========================
+            # ENVÍO A GOOGLE SHEETS
+            # =========================
             import requests
 
             data = {
                 "score_global": average_score,
                 "scores": scores,
-                "summary": summary_response.choices[0].message.content,
+                "summary": final_summary_text,
                 "contexto_uso": contexto_uso,
                 "impacto_error": impacto_error
             }
@@ -511,12 +564,12 @@ if uploaded_file:
                     "https://script.google.com/macros/s/AKfycbwgowPNFGeBzYGbD2UNLgKlghrgN9KTHuhzVKB2ym-_GL67nSRx9BQD85R0PpR5WMgC/exec",
                     json=data
                 )
-            except:
+            except Exception:
                 pass
 
-# =========================
-# CTA FINAL – SOLO TRAS ANÁLISIS
-# =========================
+            # =========================
+            # CTA FINAL – ¿QUIERES IR MÁS ALLÁ?
+            # =========================
             st.markdown("---")
 
             st.markdown(
@@ -544,51 +597,3 @@ if uploaded_file:
                     """,
                     unsafe_allow_html=True
                 )
-
-            # ── Descarga PDF ───────────────────────────────────
-            st.markdown("---")
-            st.markdown(
-                """
-                <div style="font-size:18px; font-weight:600; margin-bottom:8px;">
-                    📄 Descargar informe
-                </div>
-                <div style="font-size:14px; color:#444; margin-bottom:16px;">
-                    Exporta el análisis completo en PDF con diseño profesional.
-                </div>
-                """,
-                unsafe_allow_html=True,
-            )
-
-            # Leer logo como base64 (opcional, puede fallar sin problema)
-            try:
-                base_dir = os.path.dirname(__file__)
-                logo_path = os.path.join(base_dir, "logo.svg")
-                with open(logo_path, "rb") as lf:
-                    logo_b64_pdf = base64.b64encode(lf.read()).decode("utf-8")
-            except Exception:
-                logo_b64_pdf = None
-
-            final_summary_text = summary_response.choices[0].message.content
-
-            pdf_bytes = generate_hmi_pdf(
-                image_bytes=image_bytes,
-                scores=scores,
-                bridge_names=bridge_names_list,
-                bridge_summaries=bridge_summaries_list,
-                average_score=average_score,
-                final_summary=final_summary_text,
-                contexto_uso=contexto_uso,
-                impacto_error=impacto_error,
-                logo_b64=logo_b64_pdf,
-            )
-
-            from datetime import datetime
-            filename = f"HMI_Informe_{datetime.now().strftime('%Y%m%d_%H%M')}.pdf"
-
-            st.download_button(
-                label="⬇️ Descargar PDF",
-                data=pdf_bytes,
-                file_name=filename,
-                mime="application/pdf",
-                use_container_width=False,
-            )
