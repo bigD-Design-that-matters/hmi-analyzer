@@ -518,9 +518,6 @@ if uploaded_file:
                     Este análisis es una evaluación rápida basada en una única imagen.
                     Si necesitas un diagnóstico más profundo —con contexto de uso real,
                     flujos operativos y criterios industriales— podemos ayudarte.
-                    <br><br>
-                    También puedes conocer más sobre HMI Design Observatory, nuestros informes
-                    y otras herramientas de diseño HMI industrial.
                 </div>
                 """,
                 unsafe_allow_html=True
