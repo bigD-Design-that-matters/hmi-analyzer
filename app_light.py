@@ -204,8 +204,32 @@ if uploaded_file:
         with st.spinner("Analizando interfaz según los 8 Puentes Cognitivos..."):
 
             bridges = [
-                ("PUENTE 01 – ORIENTAR", "Orientación del usuario y visibilidad del estado."),
-                ("PUENTE 02 – ENFOCAR", "Jerarquía visual y señal frente a ruido."),
+                ("PUENTE 01 – ORIENTAR", """
+                El usuario debe entender rápidamente dónde está, qué está viendo y cómo se organiza el sistema.
+
+                Evalúa si:
+                - El estado del sistema es visible y claro
+                - Existe estructura (overview → detalle)
+                - La navegación es coherente y predecible
+
+                Penaliza si:
+                - No se entiende el contexto general
+                - La información está desordenada o fragmentada
+                - El usuario necesita interpretar demasiado
+                """),
+                ("PUENTE 02 – ENFOCAR", """
+                La interfaz debe dirigir la atención hacia lo importante sin esfuerzo.
+
+                Evalúa si:
+                - Lo crítico destaca visualmente
+                - Existe jerarquía clara (tamaño, color, posición)
+                - El ruido visual está controlado
+
+                Penaliza si:
+                - Todo tiene el mismo peso visual
+                - Hay exceso de información o elementos
+                - Lo importante no destaca claramente
+                """),
                 ("PUENTE 03 – ADVERTIR", "Claridad y prioridad de alertas."),
                 ("PUENTE 04 – ENTENDER", "Relaciones causa–efecto y contexto."),
                 ("PUENTE 05 – PROYECTAR", "Tendencias y anticipación."),
