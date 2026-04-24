@@ -152,30 +152,30 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
-st.markdown("## ⚙️ Condiciones Operativas del Sistema")
+st.markdown("## ⚙️ Contexto de uso")
 
-tipo_sistema = st.selectbox(
-    "1. Tipo de sistema",
-    ["Producción", "Seguridad", "Emergencia", "Mantenimiento"]
+st.markdown(
+    "Estos parámetros ajustan el nivel de exigencia del análisis según cómo se usa esta pantalla en la realidad."
 )
 
-nivel_criticidad = st.selectbox(
-    "2. Nivel de criticidad",
+# 1. CONTEXTO DE USO
+contexto_uso = st.selectbox(
+    "1. ¿Para qué se usa esta pantalla?",
     [
-        "Bajo (errores reversibles, bajo impacto)",
-        "Medio (impacto operativo relevante)",
-        "Alto (impacto en seguridad, coste o parada de línea)"
+        "Operación normal (control del proceso en funcionamiento habitual)",
+        "Mantenimiento o diagnóstico (revisar fallos, hacer ajustes o comprobar el sistema)",
+        "Situación crítica (cuando hay riesgo, alarmas o necesidad de actuar rápido)"
     ]
 )
 
-perfil_usuario = st.selectbox(
-    "3. Perfil del usuario",
-    ["Operador experto", "Operador nuevo", "Supervisor / ingeniero"]
-)
-
-entorno_operativo = st.selectbox(
-    "4. Entorno operativo",
-    ["Normal", "Alta presión (ritmo elevado, picos de carga)", "Emergencia"]
+# 2. CONSECUENCIAS
+impacto_error = st.selectbox(
+    "2. ⚠️ ¿Qué tipo de consecuencias están asociadas a esta pantalla?",
+    [
+        "Errores fácilmente corregibles (se pueden deshacer sin afectar al sistema)",
+        "Errores que afectan a la operación (pueden provocar paradas, fallos o pérdida de producción)",
+        "Errores con riesgo o impacto grave (pueden afectar a seguridad, personas o costes importantes)"
+    ]
 )
 # =========================
 # PREVIEW + BOTÓN
@@ -211,11 +211,9 @@ if uploaded_file:
             global_inputs = []
 
             contexto_estructurado = f"""
-            Condiciones operativas del sistema:
-            - Tipo de sistema: {tipo_sistema}
-            - Nivel de criticidad: {nivel_criticidad}
-            - Perfil del usuario: {perfil_usuario}
-            - Entorno operativo: {entorno_operativo}
+            Contexto de uso de la interfaz:
+            - Uso principal: {contexto_uso}
+            - Consecuencias de error: {impacto_error}
             """
 
 
