@@ -119,8 +119,14 @@ with col_logo:
 # TEXTO INTRODUCTORIO
 # =========================
 st.markdown(
-    "Sube una imagen de una interfaz HMI y obtén una evaluación clara, crítica y orientativa "
-    "sobre la calidad de su diseño desde un punto de vista cognitivo y operativo."
+    """
+    Los “puentes cognitivos” representan los momentos clave de la interacción entre la persona, 
+    la máquina y la interfaz. Analizar estos momentos permite identificar dónde la interfaz 
+    acompaña correctamente al usuario… y dónde genera fricción, error o falta de comprensión.
+
+    Sube una imagen de una interfaz HMI y obtén una evaluación clara, crítica y orientativa 
+    sobre la calidad de su diseño desde un punto de vista cognitivo y operativo.
+    """
 )
 
 # =========================
