@@ -295,7 +295,7 @@ if uploaded_file:
                 - Riesgo de error en acciones
                 - Mala ergonomía digital
                 """),
-                (""PUENTE 08 – APRENDER", """
+                ("PUENTE 08 – APRENDER", """
                 La interfaz debe facilitar el aprendizaje y mejora continua.
 
                 Evalúa si:
