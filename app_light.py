@@ -201,7 +201,7 @@ if uploaded_file:
     # =========================
     # ANÁLISIS
     # =========================
-    if analizar:
+    if analizar or st.session_state.get("analysis_done"):
         with st.spinner("Analizando interfaz según los 8 Puentes Cognitivos..."):
 
             bridges = [
@@ -496,6 +496,15 @@ if uploaded_file:
             )
 
             final_summary_text = summary_response.choices[0].message.content
+
+            st.session_state["analysis_done"] = True
+            st.session_state["scores"] = scores
+            st.session_state["bridge_names"] = bridge_names_list
+            st.session_state["bridge_summaries"] = bridge_summaries_list
+            st.session_state["average_score"] = average_score
+            st.session_state["final_summary"] = final_summary_text
+            st.session_state["image_bytes"] = image_bytes
+
             st.write(final_summary_text)
 
             # =========================
