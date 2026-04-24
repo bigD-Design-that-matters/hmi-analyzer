@@ -2,6 +2,7 @@ import streamlit as st
 from openai import OpenAI
 import base64
 import os
+from generate_pdf import generate_hmi_pdf
 
 # =========================
 # CONFIGURACIÓN OPENAI
@@ -312,6 +313,8 @@ if uploaded_file:
 
             scores = []
             global_inputs = []
+            bridge_summaries_list = []
+            bridge_names_list = []
 
             contexto_estructurado = f"""
             Contexto de uso de la interfaz:
@@ -395,7 +398,8 @@ if uploaded_file:
                     continue
 
                 scores.append(score)
-                
+                bridge_summaries_list.append(summary)
+                bridge_names_list.append(title)
                 global_inputs.append(f"{title}: {summary}")
 
                 if score >= 7:
@@ -540,3 +544,51 @@ if uploaded_file:
                     """,
                     unsafe_allow_html=True
                 )
+
+            # ── Descarga PDF ───────────────────────────────────
+            st.markdown("---")
+            st.markdown(
+                """
+                <div style="font-size:18px; font-weight:600; margin-bottom:8px;">
+                    📄 Descargar informe
+                </div>
+                <div style="font-size:14px; color:#444; margin-bottom:16px;">
+                    Exporta el análisis completo en PDF con diseño profesional.
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+
+            # Leer logo como base64 (opcional, puede fallar sin problema)
+            try:
+                base_dir = os.path.dirname(__file__)
+                logo_path = os.path.join(base_dir, "logo.svg")
+                with open(logo_path, "rb") as lf:
+                    logo_b64_pdf = base64.b64encode(lf.read()).decode("utf-8")
+            except Exception:
+                logo_b64_pdf = None
+
+            final_summary_text = summary_response.choices[0].message.content
+
+            pdf_bytes = generate_hmi_pdf(
+                image_bytes=image_bytes,
+                scores=scores,
+                bridge_names=bridge_names_list,
+                bridge_summaries=bridge_summaries_list,
+                average_score=average_score,
+                final_summary=final_summary_text,
+                contexto_uso=contexto_uso,
+                impacto_error=impacto_error,
+                logo_b64=logo_b64_pdf,
+            )
+
+            from datetime import datetime
+            filename = f"HMI_Informe_{datetime.now().strftime('%Y%m%d_%H%M')}.pdf"
+
+            st.download_button(
+                label="⬇️ Descargar PDF",
+                data=pdf_bytes,
+                file_name=filename,
+                mime="application/pdf",
+                use_container_width=False,
+            )
