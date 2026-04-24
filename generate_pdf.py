@@ -260,14 +260,22 @@ def generate_hmi_pdf(
     label_g = score_label(average_score)
     hex_g = color_g.hexval()[2:]
 
-    story.append(Paragraph(
-        "<font size=11>Score global</font>",
-        s["body"],
-    ))
-    story.append(Paragraph(
-        f"<font color='#{hex_g}' size=28><b>{average_score}/10</b></font>",
-        s["body"],
-    ))
+    fila_score = Table(
+        [[
+            Paragraph("<font size=28><b>Score global</b></font>", s["body"]),
+            Paragraph(f"<font color='#{hex_g}' size=28><b>{average_score}/10</b></font>", s["body"]),
+        ]],
+        colWidths=[CONTENT_W * 0.55, CONTENT_W * 0.45],
+    )
+    fila_score.setStyle(TableStyle([
+        ("VALIGN",        (0, 0), (-1, -1), "MIDDLE"),
+        ("LEFTPADDING",   (0, 0), (-1, -1), 0),
+        ("RIGHTPADDING",  (0, 0), (-1, -1), 0),
+        ("TOPPADDING",    (0, 0), (-1, -1), 0),
+        ("BOTTOMPADDING", (0, 0), (-1, -1), 0),
+        ("ALIGN",         (1, 0), (1, 0), "RIGHT"),
+    ]))
+    story.append(fila_score)
     story.append(Spacer(1, 2 * mm))
     story.append(ScoreBar(average_score, width=CONTENT_W, height=8))
 
@@ -445,12 +453,13 @@ def generate_hmi_pdf(
     # ══════════════════════════════════════════════════════════
     bloque_disclaimer = Table(
         [[
-            Paragraph(
-                "<b>Privacidad de los datos.</b>  "<br><br>
-                "Las imagenes analizadas no son almacenadas por bigD. "<br>
-                "Los resultados del analisis no se vinculan con el usuario registrado.",
-                s["disclaimer"],
-            )
+            [
+                Paragraph("<b>Privacidad de los datos.</b>", s["disclaimer"]),
+                Spacer(1, 3),
+                Paragraph("Las imagenes analizadas no son almacenadas por bigD.", s["disclaimer"]),
+                Spacer(1, 3),
+                Paragraph("Los resultados del analisis no se vinculan con el usuario registrado.", s["disclaimer"]),
+            ]
         ]],
         colWidths=[CONTENT_W],
     )
@@ -471,11 +480,11 @@ def generate_hmi_pdf(
     # ══════════════════════════════════════════════════════════
     bloque_contacto = Table(
         [[
-            Paragraph(
-                "<b>Necesitas un diagnostico mas profundo?</b>  "<br><br>
-                "info@bigd.es  -  bigd.es",
-                s["contacto"],
-            )
+            [
+                Paragraph("<b>Necesitas un diagnostico mas profundo?</b>", s["contacto"]),
+                Spacer(1, 3),
+                Paragraph("info@bigd.es  -  bigd.es/contacto", s["contacto"]),
+            ]
         ]],
         colWidths=[CONTENT_W],
     )
