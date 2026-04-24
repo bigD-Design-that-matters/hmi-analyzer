@@ -201,7 +201,7 @@ if uploaded_file:
     # =========================
     # ANÁLISIS
     # =========================
-    if analizar or st.session_state.get("analysis_done"):
+    if analizar and not st.session_state.get("analysis_done"):
         with st.spinner("Analizando interfaz según los 8 Puentes Cognitivos..."):
 
             bridges = [
