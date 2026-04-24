@@ -214,7 +214,7 @@ if uploaded_file:
     # ANÁLISIS
     # =========================
     if analizar and not st.session_state.get("analysis_done"):
-        with st.spinner("Analizando interfaz según los 8 Puentes Cognitivos..."):
+        with st.spinner("Analizando tu interfaz..."):
 
 
 
@@ -639,6 +639,17 @@ if uploaded_file:
                 file_name=filename,
                 mime="application/pdf",
                 use_container_width=False,
+
+            )
+
+            st.markdown(
+                """
+                <div style="font-size:13px; color:#666; margin-top:8px;">
+                    Al descargar el informe, el análisis dejará de mostrarse en pantalla. 
+                    Podrás consultarlo en el PDF generado.
+                </div>
+                """,
+                unsafe_allow_html=True
             )
 
             # =========================
