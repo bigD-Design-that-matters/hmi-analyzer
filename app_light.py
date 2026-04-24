@@ -152,7 +152,14 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
-st.markdown("## ⚙️ Contexto de uso")
+st.markdown(
+    """
+    <div style="font-size:22px; font-weight:600; margin-top:20px; margin-bottom:10px;">
+        Contexto de uso
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 
 st.markdown(
     "Estos parámetros ajustan el nivel de exigencia del análisis según cómo se usa esta pantalla en la realidad."
