@@ -539,7 +539,7 @@ if uploaded_file:
             filename = f"HMI_Informe_{datetime.now().strftime('%Y%m%d_%H%M')}.pdf"
 
             st.download_button(
-                label="⬇️ Descargar PDF",
+                label="Descargar PDF",
                 data=pdf_bytes,
                 file_name=filename,
                 mime="application/pdf",
