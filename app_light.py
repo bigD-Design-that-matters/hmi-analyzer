@@ -502,7 +502,6 @@ if uploaded_file:
             # DESCARGA PDF
             # (justo tras el resumen final)
             # =========================
-            st.markdown("---")
             st.markdown(
                 """
                 <div style="font-size:18px; font-weight:600; margin-bottom:6px;">
