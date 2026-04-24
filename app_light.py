@@ -452,8 +452,14 @@ if uploaded_file:
 
 
                 if title == "PUENTE 01 – ORIENTAR":
-                    with st.expander("ℹ️ ¿Qué significa este puente?"):
-                        st.write(bridge_info[title])
+
+                    col1, col2 = st.columns([10,1])
+
+                    with col2:
+                        toggle = st.button("?", key=f"info_{title}")
+
+                    if toggle:
+                        st.info(bridge_info[title])
                 
 
 
