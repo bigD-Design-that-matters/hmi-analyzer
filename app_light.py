@@ -221,59 +221,52 @@ if uploaded_file:
             bridge_info = {
 
                 "PUENTE 01 – ORIENTAR":
-                "Ubicar al usuario en el sistema desde el primer vistazo.\n\n"
-                "Conecta el mundo real de la máquina con su representación en la interfaz para que el usuario sepa dónde está, qué está viendo y cómo moverse sin esfuerzo.Reduce la carga cognitiva alineando la interfaz con el mapa mental del operador.\n\n"
-                "Implica mostrar el estado del sistema de forma clara, estructurar la información en niveles (overview → detalle) y permitir una navegación coherente.",
+                "<strong>Ubicar al usuario en el sistema desde el primer vistazo</strong><br><br>"
+                "Conecta el mundo real de la máquina con su representación en la interfaz para que el usuario sepa dónde está, qué está viendo y cómo moverse sin esfuerzo. Reduce la carga cognitiva alineando la interfaz con el mapa mental del operador.<br><br>"
+                "Implica mostrar el estado del sistema de forma clara, estructurar la información en niveles (overview → detalle) y permitir una navegación coherente que mantenga la continuidad mental.",
 
 
                 "PUENTE 02 – ENFOCAR":
-                "Dirigir la atención hacia lo importante.\n\n"
-                "Permite distinguir rápidamente qué es crítico y qué no, eliminando ruido visual y priorizando la información relevante.\n\n"
-                "La interfaz actúa como un filtro que organiza la complejidad.\n\n"
-                "Se basa en jerarquía visual, agrupación coherente y reducción de opciones para facilitar decisiones rápidas.",
+                "<strong>Dirigir la atención hacia lo importante</strong><br><br>"
+                "Permite distinguir rápidamente qué es crítico y qué no, eliminando ruido visual y priorizando la información relevante. La interfaz actúa como un filtro que organiza la complejidad.<br><br>"
+                "Se basa en jerarquía visual, agrupación coherente y reducción de opciones para facilitar decisiones rápidas. Lo esencial debe destacar sin que el usuario tenga que buscarlo.",
 
 
                 "PUENTE 03 – ADVERTIR":
-                "Detectar y priorizar anomalías de forma inmediata.\n\n"
-                "Hace visibles los eventos anómalos, diferenciándolos claramente del estado normal.\n\n"
-                "Permite reaccionar rápido y sin ambigüedad.\n\n"
-                "Un buen sistema de alertas indica gravedad, causa y acción necesaria.",
+                "<strong>Detectar y priorizar anomalías de forma inmediata</strong><br><br>"
+                "Hace visibles los eventos anómalos, diferenciándolos claramente del estado normal, para que el usuario reaccione rápido y sin ambigüedad.<br><br>"
+                "Un buen sistema de alertas indica gravedad, causa y acción necesaria. Evita tanto el exceso de alarmas como la falta de señal, asegurando que lo crítico destaque de forma inequívoca.",
 
 
                 "PUENTE 04 – ENTENDER":
-                "Convertir datos en significado operativo.\n\n"
-                "No basta con mostrar información: este puente permite comprender qué está pasando y por qué.\n\n"
-                "Explica relaciones causa–efecto y da contexto a los datos.\n\n"
-                "La interfaz traduce números en conocimiento accionable.",
+                "<strong>Convertir datos en significado operativo</strong><br><br>"
+                "No basta con mostrar información: este puente permite comprender qué está pasando y por qué.<br><br>"
+                "Explica relaciones causa–efecto, da contexto a los datos (setpoints, rangos, límites) y organiza la información para que el usuario reconozca patrones sin esfuerzo. La interfaz traduce números en conocimiento accionable.",
 
 
                 "PUENTE 05 – PROYECTAR":
-                "Anticipar el comportamiento futuro del sistema.\n\n"
-                "Permite prever qué va a pasar si nada cambia o si se toman decisiones.\n\n"
-                "Se apoya en tendencias y comparaciones temporales.\n\n"
-                "Transforma la operación de reactiva a preventiva.",
+                "<strong>Anticipar el comportamiento futuro del sistema</strong><br><br>"
+                "Va más allá del estado actual y permite prever qué va a pasar si nada cambia o si se toman ciertas decisiones.<br><br>"
+                "Se apoya en tendencias, comparaciones temporales y simulación de escenarios para detectar problemas antes de que ocurran. Transforma la operación de reactiva a preventiva.",
 
 
                 "PUENTE 06 – GUIAR":
-                "Acompañar la acción paso a paso.\n\n"
-                "La interfaz indica qué hacer, en qué orden y bajo qué condiciones.\n\n"
-                "Reduce la incertidumbre descomponiendo tareas en secuencias claras.\n\n"
-                "Ofrece ayuda contextual y previene errores.",
+                "<strong>Acompañar la acción paso a paso</strong><br><br>"
+                "La interfaz deja de ser informativa y pasa a ser operativa: indica qué hacer, en qué orden y bajo qué condiciones.<br><br>"
+                "Reduce la incertidumbre descomponiendo tareas en secuencias claras, bloqueando acciones incorrectas y ofreciendo ayuda contextual, especialmente en situaciones críticas o de error.",
 
 
                 "PUENTE 07 – ACCEDER":
-                "Facilitar la ejecución sin fricción ni error.\n\n"
-                "Asegura que la acción sea fácil, rápida y segura.\n\n"
-                "Optimiza tamaño, posición y feedback de los controles.\n\n"
-                "Evita errores mediante diseño preventivo (poka-yoke).",
+                "<strong>Facilitar la ejecución sin fricción ni error</strong><br><br>"
+                "Asegura que la acción sea fácil, rápida y segura, incluso en condiciones reales de planta (guantes, ruido, movimiento…).<br><br>"
+                "Optimiza la ergonomía digital (tamaño, posición, feedback), adapta la interfaz al contexto y evita errores mediante restricciones y diseño preventivo (poka-yoke).",
 
 
                 "PUENTE 08 – APRENDER":
-                "Convertir cada interacción en conocimiento.\n\n"
-                "Permite mejorar con el uso a partir de datos históricos.\n\n"
-                "Ayuda a evitar errores futuros y refuerza el criterio del operador.\n\n"
-                "Asegura transparencia en sistemas complejos."
-            }
+                "<strong>Convertir cada interacción en conocimiento</strong><br><br>"
+                "Cierra el ciclo haciendo que el sistema y el usuario mejoren con el uso.<br><br>"
+                "Utiliza datos históricos, patrones de uso y feedback para evitar errores futuros, reforzar el criterio del operador y evolucionar la interfaz. También asegura transparencia en sistemas complejos (evitando la “black box”)."
+}
 
 
 
