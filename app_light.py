@@ -452,14 +452,13 @@ if uploaded_file:
 
 
                 if title == "PUENTE 01 – ORIENTAR":
-
-                    col1, col2 = st.columns([10,1])
-
-                    with col2:
-                        toggle = st.button("?", key=f"info_{title}")
-
-                    if toggle:
-                        st.info(bridge_info[title])
+                    with st.expander("ⓘ"):
+                        st.markdown(
+                            "<div style='font-size:14px; line-height:1.5;'>"
+                            + bridge_info[title].replace("\n", "<br>")
+                            + "</div>",
+                            unsafe_allow_html=True
+                        )
                 
 
 
