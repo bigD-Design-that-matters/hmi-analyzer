@@ -219,11 +219,61 @@ if uploaded_file:
 
 
             bridge_info = {
-                "PUENTE 01 – ORIENTAR": 
+
+                "PUENTE 01 – ORIENTAR":
                 "Ubicar al usuario en el sistema desde el primer vistazo.\n\n"
                 "Conecta el mundo real de la máquina con su representación en la interfaz para que el usuario sepa dónde está, qué está viendo y cómo moverse sin esfuerzo.\n\n"
                 "Reduce la carga cognitiva alineando la interfaz con el mapa mental del operador.\n\n"
-                "Implica mostrar el estado del sistema de forma clara, estructurar la información en niveles (overview → detalle) y permitir una navegación coherente."
+                "Implica mostrar el estado del sistema de forma clara, estructurar la información en niveles (overview → detalle) y permitir una navegación coherente.",
+
+
+                "PUENTE 02 – ENFOCAR":
+                "Dirigir la atención hacia lo importante.\n\n"
+                "Permite distinguir rápidamente qué es crítico y qué no, eliminando ruido visual y priorizando la información relevante.\n\n"
+                "La interfaz actúa como un filtro que organiza la complejidad.\n\n"
+                "Se basa en jerarquía visual, agrupación coherente y reducción de opciones para facilitar decisiones rápidas.",
+
+
+                "PUENTE 03 – ADVERTIR":
+                "Detectar y priorizar anomalías de forma inmediata.\n\n"
+                "Hace visibles los eventos anómalos, diferenciándolos claramente del estado normal.\n\n"
+                "Permite reaccionar rápido y sin ambigüedad.\n\n"
+                "Un buen sistema de alertas indica gravedad, causa y acción necesaria.",
+
+
+                "PUENTE 04 – ENTENDER":
+                "Convertir datos en significado operativo.\n\n"
+                "No basta con mostrar información: este puente permite comprender qué está pasando y por qué.\n\n"
+                "Explica relaciones causa–efecto y da contexto a los datos.\n\n"
+                "La interfaz traduce números en conocimiento accionable.",
+
+
+                "PUENTE 05 – PROYECTAR":
+                "Anticipar el comportamiento futuro del sistema.\n\n"
+                "Permite prever qué va a pasar si nada cambia o si se toman decisiones.\n\n"
+                "Se apoya en tendencias y comparaciones temporales.\n\n"
+                "Transforma la operación de reactiva a preventiva.",
+
+
+                "PUENTE 06 – GUIAR":
+                "Acompañar la acción paso a paso.\n\n"
+                "La interfaz indica qué hacer, en qué orden y bajo qué condiciones.\n\n"
+                "Reduce la incertidumbre descomponiendo tareas en secuencias claras.\n\n"
+                "Ofrece ayuda contextual y previene errores.",
+
+
+                "PUENTE 07 – ACCEDER":
+                "Facilitar la ejecución sin fricción ni error.\n\n"
+                "Asegura que la acción sea fácil, rápida y segura.\n\n"
+                "Optimiza tamaño, posición y feedback de los controles.\n\n"
+                "Evita errores mediante diseño preventivo (poka-yoke).",
+
+
+                "PUENTE 08 – APRENDER":
+                "Convertir cada interacción en conocimiento.\n\n"
+                "Permite mejorar con el uso a partir de datos históricos.\n\n"
+                "Ayuda a evitar errores futuros y refuerza el criterio del operador.\n\n"
+                "Asegura transparencia en sistemas complejos."
             }
 
 
@@ -451,8 +501,7 @@ if uploaded_file:
                 )
 
 
-                if title == "PUENTE 01 – ORIENTAR":
-                    with st.expander("ⓘ"):
+                with st.expander("ⓘ"):
                         st.markdown(
                             "<div style='font-size:14px; line-height:1.5;'>"
                             + bridge_info[title].replace("\n", "<br>")
