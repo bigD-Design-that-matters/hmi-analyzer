@@ -261,9 +261,11 @@ def generate_hmi_pdf(
     hex_g = color_g.hexval()[2:]
 
     story.append(Paragraph(
-        f"Score global: "
-        f"<font color='#{hex_g}' size=22><b>{average_score}/10</b></font>"
-        f"  <font color='#{hex_g}' size=10><b>-- {label_g}</b></font>",
+        "<font size=11>Score global</font>",
+        s["body"],
+    ))
+    story.append(Paragraph(
+        f"<font color='#{hex_g}' size=28><b>{average_score}/10</b></font>",
         s["body"],
     ))
     story.append(Spacer(1, 2 * mm))
@@ -439,28 +441,45 @@ def generate_hmi_pdf(
     story.append(Spacer(1, 8 * mm))
 
     # ══════════════════════════════════════════════════════════
-    # DISCLAIMER + CONTACTO
+    # DISCLAIMER
     # ══════════════════════════════════════════════════════════
-    bloque_footer = Table(
+    bloque_disclaimer = Table(
         [[
-            [
-                Paragraph(
-                    "<b>Privacidad de los datos.</b>  "
-                    "Las imagenes analizadas no son almacenadas por bigD. "
-                    "Los resultados del analisis no se vinculan con el usuario registrado.",
-                    s["disclaimer"],
-                ),
-                Spacer(1, 5),
-                Paragraph(
-                    "Necesitas un diagnostico mas profundo?  "
-                    "info@bigd.es  -  bigd.es/contacto",
-                    s["contacto"],
-                ),
-            ]
+            Paragraph(
+                "<b>Privacidad de los datos.</b>  "
+                "Las imagenes analizadas no son almacenadas por bigD. "
+                "Los resultados del analisis no se vinculan con el usuario registrado.",
+                s["disclaimer"],
+            )
         ]],
         colWidths=[CONTENT_W],
     )
-    bloque_footer.setStyle(TableStyle([
+    bloque_disclaimer.setStyle(TableStyle([
+        ("BACKGROUND",    (0, 0), (-1, -1), GRIS_CLARO),
+        ("LEFTPADDING",   (0, 0), (-1, -1), 8 * mm),
+        ("RIGHTPADDING",  (0, 0), (-1, -1), 8 * mm),
+        ("TOPPADDING",    (0, 0), (-1, -1), 5 * mm),
+        ("BOTTOMPADDING", (0, 0), (-1, -1), 5 * mm),
+        ("LINEABOVE",     (0, 0), (-1, 0), 1, LINEA),
+    ]))
+    story.append(bloque_disclaimer)
+
+    story.append(Spacer(1, 3 * mm))
+
+    # ══════════════════════════════════════════════════════════
+    # CONTACTO
+    # ══════════════════════════════════════════════════════════
+    bloque_contacto = Table(
+        [[
+            Paragraph(
+                "<b>Necesitas un diagnostico mas profundo?</b>  "
+                "info@bigd.es  -  bigd.es/contacto",
+                s["contacto"],
+            )
+        ]],
+        colWidths=[CONTENT_W],
+    )
+    bloque_contacto.setStyle(TableStyle([
         ("BACKGROUND",    (0, 0), (-1, -1), AZUL_CLARO),
         ("LEFTPADDING",   (0, 0), (-1, -1), 8 * mm),
         ("RIGHTPADDING",  (0, 0), (-1, -1), 8 * mm),
@@ -468,7 +487,7 @@ def generate_hmi_pdf(
         ("BOTTOMPADDING", (0, 0), (-1, -1), 5 * mm),
         ("LINEABOVE",     (0, 0), (-1, 0), 2, AZUL),
     ]))
-    story.append(bloque_footer)
+    story.append(bloque_contacto)
 
     story.append(Spacer(1, 4 * mm))
     story.append(Paragraph(
