@@ -170,7 +170,7 @@ contexto_uso = st.selectbox(
 
 # 2. CONSECUENCIAS
 impacto_error = st.selectbox(
-    "2. ⚠️ ¿Qué tipo de consecuencias están asociadas a esta pantalla?",
+    "2. ¿Qué tipo de consecuencias están asociadas a esta pantalla?",
     [
         "Errores fácilmente corregibles (se pueden deshacer sin afectar al sistema)",
         "Errores que afectan a la operación (pueden provocar paradas, fallos o pérdida de producción)",
