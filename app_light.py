@@ -335,6 +335,15 @@ if uploaded_file:
             """
 
 
+            bridge_info = {
+                "PUENTE 01 – ORIENTAR": """Ubicar al usuario en el sistema desde el primer vistazo
+
+            Conecta el mundo real de la máquina con su representación en la interfaz para que el usuario sepa dónde está, qué está viendo y cómo moverse sin esfuerzo. Reduce la carga cognitiva alineando la interfaz con el mapa mental del operador.
+
+            Implica mostrar el estado del sistema de forma clara, estructurar la información en niveles (overview → detalle) y permitir una navegación coherente que mantenga la continuidad mental."""
+            }
+
+
             
             for title, criteria in bridges:
 
@@ -430,7 +439,15 @@ if uploaded_file:
                         <img src="data:image/svg+xml;base64,{icons[title]}" style="width:80px; height:80px;" />
                         <div>
                             <span style="font-size:20px; color:#666;">{puente_num}</span><br/>
-                            <span style="font-size:32px; font-weight:700;">{puente_name}</span>
+                            <span style="font-size:32px; font-weight:700;">
+                                {puente_name}
+                                {f'''
+                                <span title="{bridge_info[title]}" 
+                                      style="cursor:help; font-size:16px; margin-left:6px; color:#666;">
+                                    ⓘ
+                                </span>
+                                ''' if title == "PUENTE 01 – ORIENTAR" else ""}
+                            </span>
                         </div>
                     </div>
                     """,
