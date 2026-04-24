@@ -446,8 +446,8 @@ def generate_hmi_pdf(
     bloque_disclaimer = Table(
         [[
             Paragraph(
-                "<b>Privacidad de los datos.</b>  "
-                "Las imagenes analizadas no son almacenadas por bigD. "
+                "<b>Privacidad de los datos.</b>  "<br><br>
+                "Las imagenes analizadas no son almacenadas por bigD. "<br>
                 "Los resultados del analisis no se vinculan con el usuario registrado.",
                 s["disclaimer"],
             )
@@ -472,8 +472,8 @@ def generate_hmi_pdf(
     bloque_contacto = Table(
         [[
             Paragraph(
-                "<b>Necesitas un diagnostico mas profundo?</b>  "
-                "info@bigd.es  -  bigd.es/contacto",
+                "<b>Necesitas un diagnostico mas profundo?</b>  "<br><br>
+                "info@bigd.es  -  bigd.es",
                 s["contacto"],
             )
         ]],
