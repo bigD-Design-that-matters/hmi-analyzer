@@ -505,7 +505,7 @@ if uploaded_file:
             st.markdown(
                 """
                 <div style="font-size:18px; font-weight:600; margin-bottom:6px;">
-                   ➡️ Descargar informe
+                   ⬇ Descargar informe
                 </div>
                 <div style="font-size:14px; color:#444; margin-bottom:14px;">
                     Exporta el análisis completo en PDF con diseño profesional.
