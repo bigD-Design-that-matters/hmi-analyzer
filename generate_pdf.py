@@ -1,476 +1,599 @@
-"""
-generate_pdf.py
----------------
-Genera un PDF con diseño para el informe de análisis HMI Analyzer.
-Uso: importar generate_hmi_pdf() desde app_light.py
-"""
-
-import io
+import streamlit as st
+from openai import OpenAI
 import base64
-from datetime import datetime
+import os
+from generate_pdf import generate_hmi_pdf
 
-from reportlab.lib.pagesizes import A4
-from reportlab.lib import colors
-from reportlab.lib.units import mm
-from reportlab.lib.styles import ParagraphStyle
-from reportlab.lib.enums import TA_LEFT, TA_CENTER, TA_RIGHT
-from reportlab.platypus import (
-    SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle,
-    HRFlowable, Image, KeepTogether, PageBreak
+# =========================
+# CONFIGURACIÓN OPENAI
+# =========================
+client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
+
+st.set_page_config(
+    page_title="HMI Analyzer – 8 Puentes",
+    layout="centered"
 )
-from reportlab.pdfgen import canvas as rl_canvas
-from reportlab.platypus.flowables import Flowable
+
+# =========================
+# ESTILO BOTÓN
+# =========================
+st.markdown(
+    """
+    <style>
+    /* Botón principal (Analizar HMI) */
+    div.stButton > button {
+        background-color: #1e88e5;
+        color: white;
+        font-weight: 600;
+        border-radius: 6px;
+        padding: 0.6em 1.2em;
+        border: none;
+    }
+
+    div.stButton > button:hover {
+        background-color: #1565c0;
+        color: white;
+    }
+
+    /* CTA gris oscuro – Análisis en profundidad */
+    a.cta-dark {
+        display: block;
+        text-align: center;
+        background-color: #424242;
+        color: white !important;
+        padding: 0.6em 1.2em;
+        border-radius: 6px;
+        font-weight: 600;
+        text-decoration: none;
+    }
+
+    a.cta-dark:hover {
+        background-color: #2f2f2f;
+        color: white !important;
+    }
+
+    /* CTA azul – Conocer el proyecto */
+    a.cta-blue {
+        display: block;
+        text-align: center;
+        background-color: #1e88e5;
+        color: white !important;
+        padding: 0.6em 1.2em;
+        border-radius: 6px;
+        font-weight: 600;
+        text-decoration: none;
+    }
+
+    a.cta-blue:hover {
+        background-color: #1565c0;
+        color: white !important;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
 
-# ── Paleta ────────────────────────────────────────────────────────────────────
-AZUL          = colors.HexColor("#1e88e5")
-AZUL_OSCURO   = colors.HexColor("#1565c0")
-GRIS_OSCURO   = colors.HexColor("#212121")
-GRIS_MEDIO    = colors.HexColor("#616161")
-GRIS_CLARO    = colors.HexColor("#F5F5F5")
-VERDE         = colors.HexColor("#2e7d32")
-AMARILLO      = colors.HexColor("#f9a825")
-ROJO          = colors.HexColor("#c62828")
-BLANCO        = colors.white
-LINEA         = colors.HexColor("#E0E0E0")
+# =========================
+# CARGA DE ICONOS SVG
+# =========================
+def load_svg_icon(filename):
+    base_dir = os.path.dirname(__file__)
+    icon_path = os.path.join(base_dir, "icons", filename)
+    with open(icon_path, "rb") as f:
+        return base64.b64encode(f.read()).decode("utf-8")
 
-W, H = A4   # 595 x 842 pt
+icons = {
+    "PUENTE 01 – ORIENTAR": load_svg_icon("puente_01_orientar.svg"),
+    "PUENTE 02 – ENFOCAR": load_svg_icon("puente_02_enfocar.svg"),
+    "PUENTE 03 – ADVERTIR": load_svg_icon("puente_03_advertir.svg"),
+    "PUENTE 04 – ENTENDER": load_svg_icon("puente_04_entender.svg"),
+    "PUENTE 05 – PROYECTAR": load_svg_icon("puente_05_proyectar.svg"),
+    "PUENTE 06 – GUIAR": load_svg_icon("puente_06_guiar.svg"),
+    "PUENTE 07 – ACCEDER": load_svg_icon("puente_07_acceder.svg"),
+    "PUENTE 08 – APRENDER": load_svg_icon("puente_08_aprender.svg"),
+}
+
+# =========================
+# HEADER (TÍTULO + LOGO)
+# =========================
+col_title, col_logo = st.columns([5, 1])
+
+with col_title:
+    st.title("HMI Analyzer")
+
+    st.markdown(
+        """
+        <div style="font-size:32px; font-weight:600; line-height:1.3; margin-bottom:24px;">
+            Evaluación cognitiva basada en los 8 puentes de
+            <span style="font-weight:700;">The Cognitive Joint™</span>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+with col_logo:
+    st.image("logo.svg", width=90)
+
+# =========================
+# TEXTO INTRODUCTORIO
+# =========================
+st.markdown(
+    "Sube una imagen de una interfaz HMI y obtén una evaluación clara, crítica y orientativa "
+    "sobre la calidad de su diseño desde un punto de vista cognitivo y operativo."
+)
+
+# =========================
+# BANNER HORIZONTAL (SVG)
+# =========================
+st.image("banner_hmi.svg", width=900)
+
+# =========================
+# UPLOAD DE IMAGEN
+# =========================
+uploaded_file = st.file_uploader(
+    "Sube una imagen de tu HMI",
+    type=["png", "jpg", "jpeg"]
+)
+st.markdown(
+    """
+    <div style="
+        background-color:rgba(153,169,201,0.1);
+        border-left:4px solid #1e88e5;
+        padding:14px 16px;
+        margin-top:10px;
+        margin-bottom:10px;
+        border-radius:6px;
+        font-size:15px;
+    ">
+        🔒 <strong> Privacidad de los datos</strong><br>
+        Las imágenes que se suben no son almacenadas por bigD.<br>
+        Los resultados del análisis no se vinculan con el usuario registrado.
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+st.markdown(
+    """
+    <div style="font-size:22px; font-weight:600; margin-top:20px; margin-bottom:10px;">
+        Contexto de uso
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
+st.markdown(
+    "Estos parámetros ajustan el nivel de exigencia del análisis según cómo se usa esta pantalla en la realidad."
+)
+
+# 1. CONTEXTO DE USO
+contexto_uso = st.selectbox(
+    "1. ¿Para qué se usa esta pantalla?",
+    [
+        "Operación normal (control del proceso en funcionamiento habitual)",
+        "Mantenimiento o diagnóstico (revisar fallos, hacer ajustes o comprobar el sistema)",
+        "Situación crítica (cuando hay riesgo, alarmas o necesidad de actuar rápido)"
+    ]
+)
+
+# 2. CONSECUENCIAS
+impacto_error = st.selectbox(
+    "2. ¿Qué tipo de consecuencias están asociadas a esta pantalla?",
+    [
+        "Errores fácilmente corregibles (se pueden deshacer sin afectar al sistema)",
+        "Errores que afectan a la operación (pueden provocar paradas, fallos o pérdida de producción)",
+        "Errores con riesgo o impacto grave (pueden afectar a seguridad, personas o costes importantes)"
+    ]
+)
+# =========================
+# PREVIEW + BOTÓN
+# =========================
+if uploaded_file:
+    st.image(uploaded_file, caption="HMI cargado", width=700)
+
+    image_bytes = uploaded_file.read()
+    image_base64 = base64.b64encode(image_bytes).decode("utf-8")
+
+    col_spacer, col_button = st.columns([3, 1])
+    with col_button:
+        analizar = st.button("Analizar HMI")
+
+    # =========================
+    # ANÁLISIS
+    # =========================
+    if analizar:
+        with st.spinner("Analizando interfaz según los 8 Puentes Cognitivos..."):
+
+            bridges = [
+                ("PUENTE 01 – ORIENTAR", """
+                El usuario debe entender rápidamente dónde está, qué está viendo y cómo se organiza el sistema.
+
+                Evalúa si:
+                - El estado del sistema es visible y claro
+                - Existe estructura (overview → detalle)
+                - La navegación es coherente y predecible
+                
+                Penaliza si:
+                - No se entiende el contexto general
+                - La información está desordenada o fragmentada
+                - El usuario necesita interpretar demasiado
+                """),
+                ("PUENTE 02 – ENFOCAR", """
+                La interfaz debe dirigir la atención hacia lo importante sin esfuerzo.
+                
+                Evalúa si:
+                - Lo crítico destaca visualmente
+                - Existe jerarquía clara (tamaño, color, posición)
+                - El ruido visual está controlado
+                
+                Penaliza si:
+                - Todo tiene el mismo peso visual
+                - Hay exceso de información o elementos
+                - Lo importante no destaca claramente
+                """),
+                ("PUENTE 03 – ADVERTIR", """
+                Las anomalías deben detectarse de forma inmediata y sin ambigüedad.
+
+                Evalúa si:
+                - Las alertas son visibles y diferenciadas
+                - Se indica gravedad y prioridad
+                - Se sugiere o facilita acción
+                
+                Penaliza si:
+                - Las alertas se confunden con información normal
+                - No queda clara la gravedad
+                - Hay exceso o ausencia de alertas
+                """),
+                ("PUENTE 04 – ENTENDER", """
+                La interfaz debe ayudar a comprender qué está pasando y por qué.
+                
+                Evalúa si:
+                - Se entienden relaciones causa–efecto
+                - Los datos tienen contexto (rangos, límites, referencias)
+                - La información permite interpretar la situación
+                
+                Penaliza si:
+                - Solo hay datos sin contexto
+                - No se entienden relaciones entre variables
+                - Requiere conocimiento previo elevado
+                """),
+                ("PUENTE 05 – PROYECTAR", """
+                La interfaz debe permitir anticipar el comportamiento del sistema.
+                
+                Evalúa si:
+                - Hay tendencias o evolución temporal
+                - Se pueden detectar problemas futuros
+                - Se facilita una visión preventiva
+                
+                Penaliza si:
+                - Solo muestra estado actual
+                - No permite anticipar nada
+                - Obliga a reaccionar en lugar de prever
+                """),
+                ("PUENTE 06 – GUIAR", """
+                La interfaz debe indicar qué hacer y en qué orden.
+                
+                Evalúa si:
+                - Las acciones están estructuradas en pasos claros
+                - Se reduce la incertidumbre del usuario
+                - Hay ayuda contextual o instrucciones
+                
+                Penaliza si:
+                - El usuario tiene que decidir sin guía
+                - No hay secuencia clara
+                - No se previenen errores
+                """),
+                ("PUENTE 07 – ACCEDER", """
+                La interacción debe ser fácil, rápida y segura en condiciones reales.
+                
+                Evalúa si:
+                - Los controles son accesibles y usables
+                - Hay buen tamaño, posición y feedback
+                - Se previenen errores de interacción
+                
+                Penaliza si:
+                - Botones pequeños o mal ubicados
+                - Riesgo de error en acciones
+                - Mala ergonomía digital
+                """),
+                ("PUENTE 08 – APRENDER", """
+                La interfaz debe facilitar el aprendizaje y mejora continua.
+
+                Evalúa si:
+                - Hay acceso a histórico o datos pasados
+                - Se pueden identificar patrones
+                - El sistema ayuda a evitar errores futuros
+
+                Penaliza si:
+                - No hay memoria del sistema
+                - No se aprende del uso
+                - Falta transparencia
+                """)
+            ]
+
+            scores = []
+            global_inputs = []
+            bridge_summaries_list = []
+            bridge_names_list = []
+
+            contexto_estructurado = f"""
+            Contexto de uso de la interfaz:
+            - Uso principal: {contexto_uso}
+            - Consecuencias de error: {impacto_error}
+            """
 
 
-# ── Helpers de color por score ────────────────────────────────────────────────
-def score_color(score):
-    if score >= 7:
-        return VERDE
-    elif score >= 5:
-        return AMARILLO
-    return ROJO
+            
+            for title, criteria in bridges:
 
+                response = client.chat.completions.create(
+                    model="gpt-4o",
+                    messages=[
+                        {
+                            "role": "system",
+                            "content": (
+                                "Eres un auditor UX industrial muy exigente. "
+                                "Evalúas interfaces HMI comparándolas con estándares profesionales. "
+                                "Utiliza una escala estricta y sé crítico."
+                            )
+                        },
+                        {
+                            "role": "user",
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text":
+                                    f"Evalúa la interfaz HMI según {title}.\n\n"
+                                    f"{criteria}\n\n"
+                                    "Instrucciones adicionales:\n"
+                                    "- Ajusta el nivel de exigencia según el contexto de uso y las consecuencias de error.\n"
+                                    "- Si la pantalla se usa en una situación crítica, sé especialmente estricto.\n"
+                                    "- Si los errores pueden tener impacto grave, penaliza ambigüedades, falta de claridad o riesgo de error.\n"
+                                    "- Si los errores son fácilmente corregibles, puedes ser ligeramente más tolerante.\n"
+                                    "Formato obligatorio:\n"
+                                    "PUNTUACIÓN: X/10\n"
+                                    "RESUMEN: un párrafo breve (2–3 frases) con un diagnóstico claro y directo.\n"
+                                    "- Evita frases genéricas que podrían aplicarse a cualquier HMI. "
+                                    "- Si no puedes identificar elementos claros en la imagen relacionados con este puente, baja la puntuación."
+                                    "- Describe los problemas o aciertos más relevantes basándote en elementos visibles concretos.\n"
+                                    "- Prioriza el aspecto más importante (no equilibres artificialmente lo positivo y lo negativo).\n"
+                                    "- Evita estructuras del tipo 'X pero Y'.\n"
+                                    "- Si la calidad es baja, sé crítico y directo.\n"
+                                    "- Si la calidad es alta, destaca claramente las fortalezas.\n"
+                                    "- No uses frases genéricas que puedan aplicarse a cualquier HMI.\n"
+                                },
+                                {
+                                    "type": "image_url",
+                                    "image_url": {
+                                        "url": f"data:image/jpeg;base64,{image_base64}"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                )
 
-def score_label(score):
-    if score >= 7:
-        return "Sólida"
-    elif score >= 5:
-        return "Mejorable"
-    return "Crítica"
+                import re
 
+                score = None
+                summary = ""
 
-# ── Barra de progreso como Flowable ──────────────────────────────────────────
-class ScoreBar(Flowable):
-    def __init__(self, score, width=120*mm, height=6):
-        super().__init__()
-        self.score = score
-        self.width = width
-        self.height = height
+                content = response.choices[0].message.content
 
-    def draw(self):
-        c = self.canv
-        # fondo
-        c.setFillColor(LINEA)
-        c.roundRect(0, 0, self.width, self.height, self.height / 2, fill=1, stroke=0)
-        # relleno
-        filled = self.width * (self.score / 10)
-        c.setFillColor(score_color(self.score))
-        c.roundRect(0, 0, filled, self.height, self.height / 2, fill=1, stroke=0)
+                match = re.search(r'(?<!\d)(\d{1,2})(?:\.\d+)?\s*/\s*10', content)
 
-    def wrap(self, availW, availH):
-        return self.width, self.height + 2
+                if match:
+                    score = round(float(match.group(1)))
 
+                # Extraer resumen
+                for line in content.splitlines():
+                    if "RESUMEN" in line.upper():
+                        parts = line.split(":", 1)
+                        if len(parts) > 1:
+                            summary = parts[1].strip()
 
-# ── Cabecera y pie en cada página ─────────────────────────────────────────────
-class HeaderFooterCanvas(rl_canvas.Canvas):
-    def __init__(self, *args, logo_b64=None, **kwargs):
-        super().__init__(*args, **kwargs)
-        self._saved_page_states = []
-        self.logo_b64 = logo_b64
+                # ⚠️ SOLO añadir score válido
+                if score is None:
+                    st.warning(f"No se pudo extraer puntuación en {title}")
+                    continue
 
-    def showPage(self):
-        self._saved_page_states.append(dict(self.__dict__))
-        self._startPage()
+                scores.append(score)
+                bridge_summaries_list.append(summary)
+                bridge_names_list.append(title)
+                global_inputs.append(f"{title}: {summary}")
 
-    def save(self):
-        num_pages = len(self._saved_page_states)
-        for state in self._saved_page_states:
-            self.__dict__.update(state)
-            self.draw_header_footer(num_pages)
-            super().showPage()
-        super().save()
+                if score >= 7:
+                    label, color = "Sólida", "#2e7d32"
+                elif score >= 5:
+                    label, color = "Mejorable", "#f9a825"
+                else:
+                    label, color = "Crítica", "#c62828"
 
-    def draw_header_footer(self, total):
-        page = self._pageNumber
+                puente_num = title.split("–")[0].title()
+                puente_name = title.split("–")[1].strip().capitalize()
 
-        # ── Header ────────────────────────────────────────────
-        self.setFillColor(AZUL)
-        self.rect(0, H - 14*mm, W, 14*mm, fill=1, stroke=0)
+                st.markdown(
+                    f"""
+                    <div style="display:flex; align-items:center; gap:8px;">
+                        <img src="data:image/svg+xml;base64,{icons[title]}" style="width:80px; height:80px;" />
+                        <div>
+                            <span style="font-size:20px; color:#666;">{puente_num}</span><br/>
+                            <span style="font-size:32px; font-weight:700;">{puente_name}</span>
+                        </div>
+                    </div>
+                    """,
+                    unsafe_allow_html=True
+                )
 
-        # Logo (si existe)
-        if self.logo_b64 and page > 1:
+                st.markdown(
+                    f"""
+                    <div style="display:flex; align-items:baseline; gap:14px; margin-top:4px;">
+                        <span style="font-size:24px; font-weight:700; color:#000;">{score}/10</span>
+                        <span style="font-size:16px; font-weight:600; color:{color};">— {label}</span>
+                    </div>
+                    """,
+                    unsafe_allow_html=True
+                )
+
+                st.markdown(
+                    f"""
+                    <div style="background:#eee; border-radius:4px; height:10px; width:100%; margin:6px 0 8px 0;">
+                        <div style="background:{color}; width:{score*10}%; height:10px; border-radius:4px;"></div>
+                    </div>
+                    """,
+                    unsafe_allow_html=True
+                )
+
+                st.write(summary)
+
+                st.markdown(
+                    "<hr style='border:none;border-top:1px solid #ddd;margin:24px 0 32px 0;'>",
+                    unsafe_allow_html=True
+                )
+
+            # =========================
+            # RESULTADO GLOBAL
+            # =========================
+
+            st.subheader("Resultado global")
+
+            if scores:
+                average_score = round(sum(scores) / len(scores), 1)
+            else:
+                average_score = 0
+                st.error("No se pudieron calcular puntuaciones.")
+
+            st.metric("Calidad UX HMI", f"{average_score} / 10")
+
+            # =========================
+            # SÍNTESIS FINAL
+            # =========================
+            summary_response = client.chat.completions.create(
+                model="gpt-4o",
+                messages=[
+                    {
+                        "role": "system",
+                        "content": (
+                            "Eres un experto en UX industrial que sintetiza evaluaciones "
+                            "para público no experto de forma clara, crítica y directa."
+                        )
+                    },
+                    {
+                        "role": "user",
+                        "content":
+                        "A partir de los siguientes resultados por puente:\n\n"
+                        + "\n".join(global_inputs)
+                        + "\n\nGenera un resumen FINAL con esta estructura:\n\n"
+                          "**OBSERVACIONES CLAVE:**\n"
+                          "- Máximo 3 bullets\n\n"
+                          "**IMPACTO OPERATIVO:**\n"
+                          "- Máximo 3 bullets\n\n"
+                          "**OPORTUNIDADES DE MEJORA:**\n"
+                          "- Máximo 3 bullets\n\n"
+                          "Lenguaje claro, directo y no técnico."
+                    }
+                ]
+            )
+
+            final_summary_text = summary_response.choices[0].message.content
+            st.write(final_summary_text)
+
+            # =========================
+            # DESCARGA PDF
+            # (justo tras el resumen final)
+            # =========================
+            st.markdown("---")
+            st.markdown(
+                """
+                <div style="font-size:18px; font-weight:600; margin-bottom:6px;">
+                    📄 Descargar informe
+                </div>
+                <div style="font-size:14px; color:#444; margin-bottom:14px;">
+                    Exporta el análisis completo en PDF con diseño profesional.
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+
             try:
-                logo_data = base64.b64decode(self.logo_b64)
-                img_buf = io.BytesIO(logo_data)
-                self.drawImage(img_buf, 12*mm, H - 12*mm, width=20*mm, height=10*mm,
-                               preserveAspectRatio=True, mask='auto')
+                base_dir = os.path.dirname(__file__)
+                logo_path = os.path.join(base_dir, "logo.svg")
+                with open(logo_path, "rb") as lf:
+                    logo_b64_pdf = base64.b64encode(lf.read()).decode("utf-8")
+            except Exception:
+                logo_b64_pdf = None
+
+            pdf_bytes = generate_hmi_pdf(
+                image_bytes=image_bytes,
+                scores=scores,
+                bridge_names=bridge_names_list,
+                bridge_summaries=bridge_summaries_list,
+                average_score=average_score,
+                final_summary=final_summary_text,
+                contexto_uso=contexto_uso,
+                impacto_error=impacto_error,
+                logo_b64=logo_b64_pdf,
+            )
+
+            from datetime import datetime
+            filename = f"HMI_Informe_{datetime.now().strftime('%Y%m%d_%H%M')}.pdf"
+
+            st.download_button(
+                label="⬇️ Descargar PDF",
+                data=pdf_bytes,
+                file_name=filename,
+                mime="application/pdf",
+                use_container_width=False,
+            )
+
+            # =========================
+            # ENVÍO A GOOGLE SHEETS
+            # =========================
+            import requests
+
+            data = {
+                "score_global": average_score,
+                "scores": scores,
+                "summary": final_summary_text,
+                "contexto_uso": contexto_uso,
+                "impacto_error": impacto_error
+            }
+
+            try:
+                requests.post(
+                    "https://script.google.com/macros/s/AKfycbwgowPNFGeBzYGbD2UNLgKlghrgN9KTHuhzVKB2ym-_GL67nSRx9BQD85R0PpR5WMgC/exec",
+                    json=data
+                )
             except Exception:
                 pass
 
-        self.setFont("Helvetica-Bold", 8)
-        self.setFillColor(BLANCO)
-        self.drawRightString(W - 12*mm, H - 9*mm, "HMI Analyzer · The Cognitive Joint™")
+            # =========================
+            # CTA FINAL – ¿QUIERES IR MÁS ALLÁ?
+            # =========================
+            st.markdown("---")
 
-        # ── Footer ────────────────────────────────────────────
-        self.setFillColor(GRIS_CLARO)
-        self.rect(0, 0, W, 10*mm, fill=1, stroke=0)
-        self.setFillColor(GRIS_MEDIO)
-        self.setFont("Helvetica", 7)
-        fecha = datetime.now().strftime("%d/%m/%Y")
-        self.drawString(12*mm, 3.5*mm, f"Informe generado el {fecha}")
-        self.drawRightString(W - 12*mm, 3.5*mm, f"Página {page} de {total}")
-
-
-# ── Estilos de texto ──────────────────────────────────────────────────────────
-def make_styles():
-    base = dict(fontName="Helvetica", fontSize=10, leading=14,
-                textColor=GRIS_OSCURO, spaceAfter=4)
-
-    return {
-        "titulo_portada": ParagraphStyle("titulo_portada",
-            fontName="Helvetica-Bold", fontSize=28, leading=34,
-            textColor=BLANCO, alignment=TA_LEFT),
-        "sub_portada": ParagraphStyle("sub_portada",
-            fontName="Helvetica", fontSize=13, leading=18,
-            textColor=colors.HexColor("#BBDEFB"), alignment=TA_LEFT),
-        "meta_portada": ParagraphStyle("meta_portada",
-            fontName="Helvetica", fontSize=9, leading=13,
-            textColor=colors.HexColor("#90CAF9"), alignment=TA_LEFT),
-        "seccion": ParagraphStyle("seccion",
-            fontName="Helvetica-Bold", fontSize=14, leading=18,
-            textColor=AZUL, spaceBefore=10, spaceAfter=6),
-        "puente_titulo": ParagraphStyle("puente_titulo",
-            fontName="Helvetica-Bold", fontSize=11, leading=14,
-            textColor=GRIS_OSCURO, spaceBefore=2),
-        "puente_num": ParagraphStyle("puente_num",
-            fontName="Helvetica", fontSize=8, leading=11,
-            textColor=GRIS_MEDIO),
-        "score_txt": ParagraphStyle("score_txt",
-            fontName="Helvetica-Bold", fontSize=16, leading=20,
-            textColor=GRIS_OSCURO),
-        "label_txt": ParagraphStyle("label_txt",
-            fontName="Helvetica-Bold", fontSize=9, leading=12),
-        "body": ParagraphStyle("body", **base),
-        "body_small": ParagraphStyle("body_small",
-            fontName="Helvetica", fontSize=9, leading=13,
-            textColor=GRIS_MEDIO, spaceAfter=4),
-        "bullet": ParagraphStyle("bullet",
-            fontName="Helvetica", fontSize=9, leading=14,
-            textColor=GRIS_OSCURO, leftIndent=10, spaceAfter=3,
-            bulletFontName="Helvetica", bulletFontSize=9,
-            bulletIndent=0),
-        "nota": ParagraphStyle("nota",
-            fontName="Helvetica-Oblique", fontSize=8, leading=12,
-            textColor=GRIS_MEDIO),
-    }
-
-
-# ── Función principal ─────────────────────────────────────────────────────────
-def generate_hmi_pdf(
-    image_bytes: bytes,
-    scores: list,          # list of int, len == 8
-    bridge_names: list,    # list of str, len == 8
-    bridge_summaries: list,# list of str, len == 8
-    average_score: float,
-    final_summary: str,
-    contexto_uso: str,
-    impacto_error: str,
-    logo_b64: str = None,  # base64 del logo SVG/PNG (opcional)
-) -> bytes:
-    """Devuelve los bytes del PDF generado."""
-
-    buf = io.BytesIO()
-    st = make_styles()
-
-    doc = SimpleDocTemplate(
-        buf,
-        pagesize=A4,
-        leftMargin=18*mm, rightMargin=18*mm,
-        topMargin=22*mm, bottomMargin=18*mm,
-        title="Informe HMI Analyzer",
-        author="HMI Analyzer · bigD",
-    )
-
-    story = []
-
-    # ══════════════════════════════════════════════════════════
-    # PORTADA
-    # ══════════════════════════════════════════════════════════
-    # Bloque azul de portada (simulado con tabla de fondo)
-    fecha = datetime.now().strftime("%d de %B de %Y")
-
-    portada_contenido = [
-        Spacer(1, 30*mm),
-        Paragraph("HMI Analyzer", st["titulo_portada"]),
-        Spacer(1, 4*mm),
-        Paragraph("Informe de evaluación cognitiva", st["sub_portada"]),
-        Spacer(1, 3*mm),
-        Paragraph("Basado en los <b>8 Puentes de The Cognitive Joint™</b>", st["sub_portada"]),
-        Spacer(1, 14*mm),
-        Paragraph(f"Fecha: {fecha}", st["meta_portada"]),
-        Paragraph(f"Uso: {contexto_uso}", st["meta_portada"]),
-        Paragraph(f"Impacto: {impacto_error}", st["meta_portada"]),
-    ]
-
-    tabla_portada = Table(
-        [[portada_contenido]],
-        colWidths=[W - 36*mm],
-        rowHeights=[120*mm]
-    )
-    tabla_portada.setStyle(TableStyle([
-        ("BACKGROUND", (0, 0), (-1, -1), AZUL),
-        ("LEFTPADDING",  (0, 0), (-1, -1), 14*mm),
-        ("RIGHTPADDING", (0, 0), (-1, -1), 10*mm),
-        ("TOPPADDING",   (0, 0), (-1, -1), 0),
-        ("BOTTOMPADDING",(0, 0), (-1, -1), 10*mm),
-        ("VALIGN", (0, 0), (-1, -1), "TOP"),
-    ]))
-    story.append(tabla_portada)
-    story.append(Spacer(1, 8*mm))
-
-    # Imagen analizada en portada
-    try:
-        img_buf = io.BytesIO(image_bytes)
-        img = Image(img_buf, width=W - 36*mm, height=60*mm)
-        img.hAlign = "CENTER"
-        story.append(img)
-    except Exception:
-        pass
-
-    story.append(Spacer(1, 6*mm))
-
-    # Score global en portada
-    color_global = score_color(average_score)
-    label_global = score_label(average_score)
-
-    score_row = Table(
-        [[
-            Paragraph(f"Score global", st["body_small"]),
-            Paragraph(f"<font color='#{color_global.hexval()[2:]}' size=26><b>{average_score}/10</b></font>  "
-                      f"<font color='#{color_global.hexval()[2:]}' size=11><b>— {label_global}</b></font>",
-                      st["body"]),
-        ]],
-        colWidths=[40*mm, W - 76*mm],
-    )
-    score_row.setStyle(TableStyle([
-        ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
-        ("LEFTPADDING", (0, 0), (-1, -1), 0),
-    ]))
-    story.append(score_row)
-    story.append(ScoreBar(average_score, width=W - 36*mm, height=8))
-    story.append(Spacer(1, 4*mm))
-
-    story.append(PageBreak())
-
-    # ══════════════════════════════════════════════════════════
-    # TABLA RESUMEN DE PUNTUACIONES
-    # ══════════════════════════════════════════════════════════
-    story.append(Paragraph("Resumen por puentes", st["seccion"]))
-    story.append(HRFlowable(width="100%", thickness=1, color=LINEA, spaceAfter=6))
-
-    tabla_data = [["Puente", "Nombre", "Puntuación", "Valoración"]]
-    for i, (name, score) in enumerate(zip(bridge_names, scores)):
-        num = name.split("–")[0].strip()
-        nom = name.split("–")[1].strip().capitalize() if "–" in name else name
-        clr = score_color(score)
-        lbl = score_label(score)
-        tabla_data.append([
-            Paragraph(f"<font size=8 color='#616161'>{num}</font>", st["body"]),
-            Paragraph(f"<b>{nom}</b>", st["body"]),
-            Paragraph(f"<b>{score}/10</b>", st["body"]),
-            Paragraph(f"<font color='#{clr.hexval()[2:]}'><b>{lbl}</b></font>", st["body"]),
-        ])
-
-    tabla_scores = Table(
-        tabla_data,
-        colWidths=[30*mm, 70*mm, 30*mm, 30*mm],
-        repeatRows=1,
-    )
-    tabla_scores.setStyle(TableStyle([
-        # Cabecera
-        ("BACKGROUND", (0, 0), (-1, 0), AZUL),
-        ("TEXTCOLOR",  (0, 0), (-1, 0), BLANCO),
-        ("FONTNAME",   (0, 0), (-1, 0), "Helvetica-Bold"),
-        ("FONTSIZE",   (0, 0), (-1, 0), 9),
-        ("TOPPADDING", (0, 0), (-1, 0), 6),
-        ("BOTTOMPADDING", (0, 0), (-1, 0), 6),
-        # Filas alternas
-        *[("BACKGROUND", (0, i), (-1, i), GRIS_CLARO)
-          for i in range(2, len(tabla_data), 2)],
-        ("ROWBACKGROUNDS", (0, 1), (-1, -1), [BLANCO, GRIS_CLARO]),
-        # General
-        ("FONTNAME",   (0, 1), (-1, -1), "Helvetica"),
-        ("FONTSIZE",   (0, 1), (-1, -1), 9),
-        ("TOPPADDING", (0, 1), (-1, -1), 5),
-        ("BOTTOMPADDING", (0, 1), (-1, -1), 5),
-        ("GRID", (0, 0), (-1, -1), 0.5, LINEA),
-        ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
-    ]))
-    story.append(tabla_scores)
-    story.append(Spacer(1, 8*mm))
-
-    # ══════════════════════════════════════════════════════════
-    # DETALLE POR PUENTE
-    # ══════════════════════════════════════════════════════════
-    story.append(Paragraph("Análisis por puente", st["seccion"]))
-    story.append(HRFlowable(width="100%", thickness=1, color=LINEA, spaceAfter=6))
-
-    for i, (name, score, summary_text) in enumerate(
-            zip(bridge_names, scores, bridge_summaries)):
-
-        num_txt = name.split("–")[0].strip() if "–" in name else f"PUENTE {i+1:02d}"
-        nom_txt = name.split("–")[1].strip().capitalize() if "–" in name else name
-        clr = score_color(score)
-        lbl = score_label(score)
-
-        # Contenido izquierdo
-        left = [
-            Paragraph(num_txt, st["puente_num"]),
-            Paragraph(nom_txt, st["puente_titulo"]),
-            Spacer(1, 2),
-            Paragraph(
-                f"<font color='#{clr.hexval()[2:]}' size=18><b>{score}/10</b></font>"
-                f"  <font color='#{clr.hexval()[2:]}' size=9><b>{lbl}</b></font>",
-                st["body"]
-            ),
-            ScoreBar(score, width=42*mm, height=5),
-        ]
-
-        # Contenido derecho (resumen)
-        right = [Paragraph(summary_text, st["body"])]
-
-        fila = Table(
-            [[left, right]],
-            colWidths=[52*mm, W - 36*mm - 52*mm - 6*mm],
-        )
-        fila.setStyle(TableStyle([
-            ("VALIGN", (0, 0), (-1, -1), "TOP"),
-            ("LEFTPADDING",  (0, 0), (-1, -1), 0),
-            ("RIGHTPADDING", (0, 0), (-1, -1), 0),
-            ("TOPPADDING",   (0, 0), (-1, -1), 0),
-            ("BOTTOMPADDING",(0, 0), (-1, -1), 0),
-            # línea izquierda de color
-            ("LINEAFTER", (0, 0), (0, 0), 2, clr),
-            ("RIGHTPADDING", (0, 0), (0, 0), 8*mm),
-        ]))
-
-        # Contenedor con borde redondeado simulado
-        contenedor = Table(
-            [[fila]],
-            colWidths=[W - 36*mm],
-        )
-        contenedor.setStyle(TableStyle([
-            ("BACKGROUND", (0, 0), (-1, -1), GRIS_CLARO),
-            ("LEFTPADDING",  (0, 0), (-1, -1), 8*mm),
-            ("RIGHTPADDING", (0, 0), (-1, -1), 8*mm),
-            ("TOPPADDING",   (0, 0), (-1, -1), 6*mm),
-            ("BOTTOMPADDING",(0, 0), (-1, -1), 6*mm),
-            ("LINEABOVE",  (0, 0), (-1, 0), 3, clr),
-        ]))
-
-        story.append(KeepTogether([contenedor, Spacer(1, 4*mm)]))
-
-    story.append(Spacer(1, 4*mm))
-
-    # ══════════════════════════════════════════════════════════
-    # SÍNTESIS FINAL
-    # ══════════════════════════════════════════════════════════
-    story.append(PageBreak())
-    story.append(Paragraph("Síntesis final", st["seccion"]))
-    story.append(HRFlowable(width="100%", thickness=1, color=LINEA, spaceAfter=6))
-
-    # Parsear el markdown básico del resumen (bullets y secciones)
-    section_colors = {
-        "OBSERVACIONES": AZUL,
-        "IMPACTO": AMARILLO,
-        "OPORTUNIDADES": VERDE,
-    }
-
-    current_section = None
-    section_items = {}
-    for line in final_summary.splitlines():
-        line = line.strip()
-        if not line:
-            continue
-        upper = line.upper()
-        matched = False
-        for key in section_colors:
-            if key in upper and "**" in line:
-                current_section = key
-                section_items[current_section] = []
-                matched = True
-                break
-        if not matched and current_section and line.startswith("-"):
-            section_items[current_section].append(line.lstrip("- ").strip())
-
-    if section_items:
-        cols = []
-        for key, items in section_items.items():
-            clr = section_colors.get(key, AZUL)
-            titulo_sec = {
-                "OBSERVACIONES": "Observaciones clave",
-                "IMPACTO": "Impacto operativo",
-                "OPORTUNIDADES": "Oportunidades de mejora",
-            }.get(key, key.capitalize())
-
-            cell = [
-                Paragraph(f"<font color='#{clr.hexval()[2:]}'><b>{titulo_sec}</b></font>",
-                          st["body"]),
-                Spacer(1, 3),
-            ] + [
-                Paragraph(f"• {item}", st["bullet"])
-                for item in items
-            ]
-            cols.append(cell)
-
-        if cols:
-            n = len(cols)
-            col_w = (W - 36*mm - (n - 1) * 4*mm) / n
-            tabla_sintesis = Table(
-                [cols],
-                colWidths=[col_w] * n,
-                hAlign="LEFT",
+            st.markdown(
+                """
+                <div style="font-size:22px; font-weight:600; margin-bottom:12px;">
+                    ¿Quieres ir más allá?
+                </div>
+                <div style="font-size:16px; color:#444; max-width:720px; margin-bottom:28px;">
+                    Este análisis es una evaluación rápida basada en una única imagen.
+                    Si necesitas un diagnóstico más profundo —con contexto de uso real,
+                    flujos operativos y criterios industriales— podemos ayudarte.
+                </div>
+                """,
+                unsafe_allow_html=True
             )
-            tabla_sintesis.setStyle(TableStyle([
-                ("VALIGN", (0, 0), (-1, -1), "TOP"),
-                ("BACKGROUND", (0, 0), (-1, -1), GRIS_CLARO),
-                ("LEFTPADDING",  (0, 0), (-1, -1), 6*mm),
-                ("RIGHTPADDING", (0, 0), (-1, -1), 6*mm),
-                ("TOPPADDING",   (0, 0), (-1, -1), 6*mm),
-                ("BOTTOMPADDING",(0, 0), (-1, -1), 6*mm),
-                *[("LINEABOVE", (i, 0), (i, 0), 3,
-                   list(section_colors.values())[i % len(section_colors)])
-                  for i in range(n)],
-            ]))
-            story.append(tabla_sintesis)
-    else:
-        # Fallback: texto plano
-        for line in final_summary.splitlines():
-            line = line.strip().replace("**", "")
-            if not line:
-                story.append(Spacer(1, 3))
-            elif line.startswith("-"):
-                story.append(Paragraph(f"• {line.lstrip('- ')}", st["bullet"]))
-            else:
-                story.append(Paragraph(line, st["body"]))
 
-    story.append(Spacer(1, 10*mm))
-    story.append(HRFlowable(width="100%", thickness=0.5, color=LINEA))
-    story.append(Spacer(1, 3*mm))
-    story.append(Paragraph(
-        "Este informe ha sido generado automáticamente por <b>HMI Analyzer</b> · "
-        "The Cognitive Joint™ · bigD.es",
-        st["nota"]
-    ))
+            col_spacer, col_cta = st.columns([3, 2])
 
-    # ── Build ────────────────────────────────────────────────
-    def make_canvas(filename, **kwargs):
-        return HeaderFooterCanvas(filename, logo_b64=logo_b64, **kwargs)
-
-    doc.build(story, canvasmaker=make_canvas)
-    return buf.getvalue()
+            with col_cta:
+                st.markdown(
+                    """
+                    <a class="cta-blue" href="https://bigd.es/contacto/" target="_blank">
+                        Solicitar análisis en profundidad
+                    </a>
+                    """,
+                    unsafe_allow_html=True
+                )
