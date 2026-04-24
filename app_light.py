@@ -211,7 +211,7 @@ if uploaded_file:
                 - El estado del sistema es visible y claro
                 - Existe estructura (overview → detalle)
                 - La navegación es coherente y predecible
-
+                
                 Penaliza si:
                 - No se entiende el contexto general
                 - La información está desordenada o fragmentada
@@ -219,23 +219,95 @@ if uploaded_file:
                 """),
                 ("PUENTE 02 – ENFOCAR", """
                 La interfaz debe dirigir la atención hacia lo importante sin esfuerzo.
-
+                
                 Evalúa si:
                 - Lo crítico destaca visualmente
                 - Existe jerarquía clara (tamaño, color, posición)
                 - El ruido visual está controlado
-
+                
                 Penaliza si:
                 - Todo tiene el mismo peso visual
                 - Hay exceso de información o elementos
                 - Lo importante no destaca claramente
                 """),
-                ("PUENTE 03 – ADVERTIR", "Claridad y prioridad de alertas."),
-                ("PUENTE 04 – ENTENDER", "Relaciones causa–efecto y contexto."),
-                ("PUENTE 05 – PROYECTAR", "Tendencias y anticipación."),
-                ("PUENTE 06 – GUIAR", "Secuencias guiadas y recuperación."),
-                ("PUENTE 07 – ACCEDER", "Ergonomía digital y accesibilidad."),
-                ("PUENTE 08 – APRENDER", "Uso del histórico y aprendizaje.")
+                ("PUENTE 03 – ADVERTIR", """
+                Las anomalías deben detectarse de forma inmediata y sin ambigüedad.
+
+                Evalúa si:
+                - Las alertas son visibles y diferenciadas
+                - Se indica gravedad y prioridad
+                - Se sugiere o facilita acción
+                
+                Penaliza si:
+                - Las alertas se confunden con información normal
+                - No queda clara la gravedad
+                - Hay exceso o ausencia de alertas
+                """),
+                ("PUENTE 04 – ENTENDER", """
+                La interfaz debe ayudar a comprender qué está pasando y por qué.
+                
+                Evalúa si:
+                - Se entienden relaciones causa–efecto
+                - Los datos tienen contexto (rangos, límites, referencias)
+                - La información permite interpretar la situación
+                
+                Penaliza si:
+                - Solo hay datos sin contexto
+                - No se entienden relaciones entre variables
+                - Requiere conocimiento previo elevado
+                """),
+                ("PUENTE 05 – PROYECTAR", """
+                La interfaz debe permitir anticipar el comportamiento del sistema.
+                
+                Evalúa si:
+                - Hay tendencias o evolución temporal
+                - Se pueden detectar problemas futuros
+                - Se facilita una visión preventiva
+                
+                Penaliza si:
+                - Solo muestra estado actual
+                - No permite anticipar nada
+                - Obliga a reaccionar en lugar de prever
+                """),
+                ("PUENTE 06 – GUIAR", """
+                La interfaz debe indicar qué hacer y en qué orden.
+                
+                Evalúa si:
+                - Las acciones están estructuradas en pasos claros
+                - Se reduce la incertidumbre del usuario
+                - Hay ayuda contextual o instrucciones
+                
+                Penaliza si:
+                - El usuario tiene que decidir sin guía
+                - No hay secuencia clara
+                - No se previenen errores
+                """),
+                ("PUENTE 07 – ACCEDER", """
+                La interacción debe ser fácil, rápida y segura en condiciones reales.
+                
+                Evalúa si:
+                - Los controles son accesibles y usables
+                - Hay buen tamaño, posición y feedback
+                - Se previenen errores de interacción
+                
+                Penaliza si:
+                - Botones pequeños o mal ubicados
+                - Riesgo de error en acciones
+                - Mala ergonomía digital
+                """),
+                (""PUENTE 08 – APRENDER", """
+                La interfaz debe facilitar el aprendizaje y mejora continua.
+
+                Evalúa si:
+                - Hay acceso a histórico o datos pasados
+                - Se pueden identificar patrones
+                - El sistema ayuda a evitar errores futuros
+
+                Penaliza si:
+                - No hay memoria del sistema
+                - No se aprende del uso
+                - Falta transparencia
+                """)
             ]
 
             scores = []
