@@ -437,18 +437,32 @@ if uploaded_file:
                 puente_num = title.split("–")[0].title()
                 puente_name = title.split("–")[1].strip().capitalize()
 
-                st.markdown(
-                    f"""
-                    <div style="display:flex; align-items:center; gap:8px;">
-                        <img src="data:image/svg+xml;base64,{icons[title]}" style="width:80px; height:80px;" />
-                        <div>
-                            <span style="font-size:20px; color:#666;">{puente_num}</span><br/>
-                            <span style="font-size:32px; font-weight:700;">{puente_name}</span>
-                        </div>
-                    </div>
-                    """,
-                    unsafe_allow_html=True
-                )
+                col_icon, col_title, col_info = st.columns([1,6,1])
+
+                with col_icon:
+                    st.markdown(
+                        f'<img src="data:image/svg+xml;base64,{icons[title]}" style="width:80px; height:80px;" />',
+                        unsafe_allow_html=True
+                    )
+
+                with col_title:
+                    st.markdown(
+                        f"""
+                        <span style="font-size:20px; color:#666;">{puente_num}</span><br/>
+                        <span style="font-size:32px; font-weight:700;">{puente_name}</span>
+                        """,
+                        unsafe_allow_html=True
+                    )
+
+                with col_info:
+                    if title == "PUENTE 01 – ORIENTAR":
+                        with st.expander("ⓘ"):
+                            st.markdown(
+                                "<div style='font-size:14px; line-height:1.5;'>"
+                                + bridge_info[title].replace("\n", "<br>")
+                                + "</div>",
+                                unsafe_allow_html=True
+                            )
 
 
                 if title == "PUENTE 01 – ORIENTAR":
