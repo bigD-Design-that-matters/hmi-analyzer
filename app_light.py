@@ -201,6 +201,11 @@ impacto_error = st.selectbox(
 # PREVIEW + BOTÓN
 # =========================
 if uploaded_file:
+    # Reset análisis si cambia la imagen
+    if "last_file" not in st.session_state or st.session_state["last_file"] != uploaded_file.name:
+        st.session_state["analysis_done"] = False
+        st.session_state["last_file"] = uploaded_file.name
+    
     st.image(uploaded_file, caption="HMI cargado", width=700)
 
     image_bytes = uploaded_file.read()
